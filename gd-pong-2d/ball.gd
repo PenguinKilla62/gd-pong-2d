@@ -2,15 +2,35 @@ extends CharacterBody2D
 
 @export var speed = 400
 @export var increaseSpeedAmount = 1.2
+@export var pauseMovement = false
 var currentSpeed = speed
 
 func _ready():
 	velocity = Vector2(-200, -200).normalized() * speed
-func find_label(label, findName):
-	return label.name == findName
+	
+func set_pause_movements(isPaused):
+	$"../Player".pauseMovement = isPaused
+	$"../Opponent".pauseMovement = isPaused
+	pauseMovement = isPaused
+	
+func check_game_over():
+	var playerScore = int($"../CanvasLayer/VBoxContainer2/PlayerScoreLabelNum".text)
+	var opponentScore = int($"../CanvasLayer/VBoxContainer/OpponentScoreLabelNum".text)
+	
+	if playerScore == 10 and playerScore > opponentScore:
+		$"../CanvasLayer/GameOverControl/GameOverContainer/VictoryLabel".text = "Player Won!"
+		set_pause_movements(true)
+		$"../CanvasLayer/GameOverControl".show()
+		
+	elif opponentScore == 10 and opponentScore > playerScore:
+		$"../CanvasLayer/GameOverControl/GameOverContainer/VictoryLabel".text = "Opponent Won!"
+		set_pause_movements(true)
+		$"../CanvasLayer/GameOverControl".show()
 	
 func _physics_process(delta: float):
-	var collision = move_and_collide(velocity * delta)
+	var collision = false
+	if pauseMovement == false:
+		collision = move_and_collide(velocity * delta)
 	if collision:
 		var name : String = collision.get_collider().name
 		if name.contains("left_wall"):
@@ -40,6 +60,9 @@ func _physics_process(delta: float):
 		elif name.contains("Player"):
 			currentSpeed = currentSpeed * increaseSpeedAmount
 			velocity = velocity * increaseSpeedAmount
+			
+		if name.contains("left_wall") or name.contains("right_wall"):
+			check_game_over()
 			
 		
 		velocity = velocity.bounce(collision.get_normal())

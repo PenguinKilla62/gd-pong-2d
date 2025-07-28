@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var speed = 1200
+@export var pauseMovement = false
 
 func _ready():
 	velocity = velocity.normalized()
@@ -16,9 +17,10 @@ func _physics_process(delta):
 	else:
 		direction = 0
 	
-	velocity.y = direction * speed #* delta
-	
-	var collided = move_and_slide()
+	velocity.y = direction * speed
+	var collided = false
+	if pauseMovement == false:
+		collided = move_and_slide()
 	
 	if (collided == true):
 		velocity.x = previousVelocityX

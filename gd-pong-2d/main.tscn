@@ -1,9 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://bbpqiygpiuqpg"]
+[gd_scene load_steps=17 format=3 uid="uid://bbpqiygpiuqpg"]
 
-[ext_resource type="Script" uid="uid://bidhqcgmk25mw" path="res://opponent_score_label_num.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://76hc8cfckdwy" path="res://player.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://cvedjwqfqoq2j" path="res://game_over_control.gd" id="1_kek77"]
+[ext_resource type="Script" uid="uid://bmjrh1kgysvum" path="res://retry_button.gd" id="1_lquwl"]
 [ext_resource type="Texture2D" uid="uid://6l0vs2e6tcry" path="res://sprites/pixelSprite.png" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bu1avs7cg2w8w" path="res://exit_button.gd" id="2_7mycd"]
 [ext_resource type="Script" uid="uid://cnqb31amq3kay" path="res://ball.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://dsbgcw43vm88s" path="res://start_game_control.gd" id="4_272bh"]
+[ext_resource type="Script" uid="uid://i571iqgksv3r" path="res://start_button.gd" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://bb02nk8xcxfde" path="res://opponent.gd" id="5_lquwl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
@@ -13,16 +17,16 @@ size = Vector2(20, 103)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ig7tw"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
+size = Vector2(20, 100)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_lquwl"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
 size = Vector2(1920, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
 size = Vector2(20, 1080)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
-size = Vector2(20, 100)
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_lquwl"]
 
 [node name="Main" type="Node2D"]
 
@@ -48,7 +52,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "0"
-script = ExtResource("1_1bvp3")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
@@ -69,6 +72,106 @@ text = "Player"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0"
+
+[node name="GameOverControl" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kek77")
+
+[node name="Background" type="Sprite2D" parent="CanvasLayer/GameOverControl"]
+modulate = Color(0.136826, 0.136826, 0.136826, 1)
+position = Vector2(18, 30)
+scale = Vector2(200, 200)
+texture = ExtResource("2_0xm2m")
+
+[node name="GameOverContainer" type="VBoxContainer" parent="CanvasLayer/GameOverControl"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -47.0
+offset_top = -46.5
+offset_right = 47.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VictoryLabel" type="Label" parent="CanvasLayer/GameOverControl/GameOverContainer"]
+layout_mode = 2
+text = "Victory Won"
+
+[node name="RetryButton" type="Button" parent="CanvasLayer/GameOverControl/GameOverContainer"]
+layout_mode = 2
+text = "Retry"
+script = ExtResource("1_lquwl")
+
+[node name="ExitButton" type="Button" parent="CanvasLayer/GameOverControl/GameOverContainer"]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("2_7mycd")
+
+[node name="StartGameControl" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_272bh")
+
+[node name="Background" type="Sprite2D" parent="CanvasLayer/StartGameControl"]
+modulate = Color(0.136826, 0.136826, 0.136826, 1)
+position = Vector2(20, 31)
+scale = Vector2(200, 200)
+texture = ExtResource("2_0xm2m")
+
+[node name="StartVBoxContainer" type="VBoxContainer" parent="CanvasLayer/StartGameControl"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -46.5
+offset_right = 23.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="NameLabel" type="Label" parent="CanvasLayer/StartGameControl/StartVBoxContainer"]
+layout_mode = 2
+text = "Pong"
+
+[node name="StartButton" type="Button" parent="CanvasLayer/StartGameControl/StartVBoxContainer"]
+layout_mode = 2
+text = "Start"
+script = ExtResource("5_5vw27")
+
+[node name="ExitButton" type="Button" parent="CanvasLayer/StartGameControl/StartVBoxContainer"]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("2_7mycd")
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(266, 539)
@@ -94,6 +197,18 @@ shape = SubResource("CircleShape2D_ig7tw")
 [node name="Sprite2D" type="Sprite2D" parent="Ball"]
 scale = Vector2(15, 15)
 texture = ExtResource("2_0xm2m")
+
+[node name="Opponent" type="CharacterBody2D" parent="."]
+position = Vector2(1510, 540)
+script = ExtResource("5_lquwl")
+speed = 800
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Opponent"]
+shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="Sprite2D" type="Sprite2D" parent="Opponent"]
+scale = Vector2(10, 100)
+texture = SubResource("CanvasTexture_lquwl")
 
 [node name="bottom_wall" type="StaticBody2D" parent="."]
 position = Vector2(965, 1101)
@@ -121,14 +236,7 @@ position = Vector2(1935, 548)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="right_wall"]
 shape = SubResource("RectangleShape2D_1bvp3")
 
-[node name="Opponent" type="CharacterBody2D" parent="."]
-position = Vector2(1510, 540)
-script = ExtResource("5_lquwl")
-speed = 800
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Opponent"]
-shape = SubResource("RectangleShape2D_7mycd")
-
-[node name="Sprite2D" type="Sprite2D" parent="Opponent"]
-scale = Vector2(10, 100)
-texture = SubResource("CanvasTexture_lquwl")
+[connection signal="pressed" from="CanvasLayer/GameOverControl/GameOverContainer/RetryButton" to="CanvasLayer/GameOverControl/GameOverContainer/RetryButton" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameOverControl/GameOverContainer/ExitButton" to="CanvasLayer/GameOverControl/GameOverContainer/ExitButton" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/StartGameControl/StartVBoxContainer/StartButton" to="CanvasLayer/StartGameControl/StartVBoxContainer/StartButton" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/StartGameControl/StartVBoxContainer/ExitButton" to="CanvasLayer/StartGameControl/StartVBoxContainer/ExitButton" method="_on_pressed"]
