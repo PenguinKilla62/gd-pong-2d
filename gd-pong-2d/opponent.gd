@@ -5,13 +5,18 @@ extends CharacterBody2D
 func _ready():
 	velocity = velocity.normalized()
 
-func get_input(delta):
-	var input_direction = Input.get_axis("up", "down")
-	velocity.y = input_direction * speed #* delta
-
 func _physics_process(delta):
 	var previousVelocityX = velocity.x
-	get_input(delta)
+	var direction = 1
+	
+	if $"../Ball".position.y > position.y:
+		direction = 1
+	elif $"../Ball".position.y < position.y:
+		direction = -1
+	else:
+		direction = 0
+	
+	velocity.y = direction * speed #* delta
 	
 	var collided = move_and_slide()
 	

@@ -1,6 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://bbpqiygpiuqpg"]
+[gd_scene load_steps=13 format=3 uid="uid://bbpqiygpiuqpg"]
 
+[ext_resource type="Script" uid="uid://bidhqcgmk25mw" path="res://opponent_score_label_num.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://76hc8cfckdwy" path="res://player.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://6l0vs2e6tcry" path="res://sprites/pixelSprite.png" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://cnqb31amq3kay" path="res://ball.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://bb02nk8xcxfde" path="res://opponent.gd" id="5_lquwl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
 size = Vector2(20, 103)
@@ -9,17 +13,16 @@ size = Vector2(20, 103)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ig7tw"]
 
-[sub_resource type="Gradient" id="Gradient_0xm2m"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(1, 1, 1, 1)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vw27"]
+size = Vector2(1920, 20)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_h2yge"]
-gradient = SubResource("Gradient_0xm2m")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bvp3"]
+size = Vector2(20, 1080)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2yge"]
-size = Vector2(1920, 40)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
+size = Vector2(20, 100)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
+[sub_resource type="CanvasTexture" id="CanvasTexture_lquwl"]
 
 [node name="Main" type="Node2D"]
 
@@ -40,11 +43,12 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Opponent"
 
-[node name="OpponentScoreLabelNum" type="Label" parent="CanvasLayer/VBoxContainer"]
+[node name="OpponentScoreLabelNum" type="Label" parent="CanvasLayer/VBoxContainer" groups=["score_labels"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "0"
+script = ExtResource("1_1bvp3")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
@@ -61,7 +65,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Player"
 
-[node name="PlayerScoreLabelNum" type="Label" parent="CanvasLayer/VBoxContainer2"]
+[node name="PlayerScoreLabelNum" type="Label" parent="CanvasLayer/VBoxContainer2" groups=["score_labels"]]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0"
@@ -69,6 +73,7 @@ text = "0"
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(266, 539)
 script = ExtResource("1_ig7tw")
+speed = 800
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(0, 0.5)
@@ -81,50 +86,49 @@ texture = SubResource("CanvasTexture_h2yge")
 
 [node name="Ball" type="CharacterBody2D" parent="."]
 position = Vector2(949, 519)
+script = ExtResource("2_h2yge")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("CircleShape2D_ig7tw")
 
 [node name="Sprite2D" type="Sprite2D" parent="Ball"]
-texture = SubResource("GradientTexture2D_h2yge")
+scale = Vector2(15, 15)
+texture = ExtResource("2_0xm2m")
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(949, 323)
-scale = Vector2(1, 0.01)
-disable_mode = 1
+[node name="bottom_wall" type="StaticBody2D" parent="."]
+position = Vector2(965, 1101)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-position = Vector2(-7, -700)
-shape = SubResource("RectangleShape2D_h2yge")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottom_wall"]
+shape = SubResource("RectangleShape2D_5vw27")
+debug_color = Color(0.885812, 0.255303, 0.540421, 0.42)
 
-[node name="TopWall" type="Area2D" parent="."]
-position = Vector2(949, 0)
-scale = Vector2(100, 1)
+[node name="top_wall" type="StaticBody2D" parent="."]
+position = Vector2(963, -7)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
-shape = SubResource("RectangleShape2D_ig7tw")
-debug_color = Color(0.770549, 0.250196, 0.903424, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top_wall"]
+shape = SubResource("RectangleShape2D_5vw27")
+debug_color = Color(0.885812, 0.255303, 0.540421, 0.42)
 
-[node name="BottomWall" type="Area2D" parent="."]
-position = Vector2(949, 1080)
-scale = Vector2(100, 1)
+[node name="left_wall" type="StaticBody2D" parent="."]
+position = Vector2(0, 548)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
-shape = SubResource("RectangleShape2D_ig7tw")
-debug_color = Color(0.715827, 0.482499, 3.85046e-07, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left_wall"]
+shape = SubResource("RectangleShape2D_1bvp3")
 
-[node name="LeftWall" type="Area2D" parent="."]
-position = Vector2(-8, 537)
-scale = Vector2(1, 55)
+[node name="right_wall" type="StaticBody2D" parent="."]
+position = Vector2(1935, 548)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-shape = SubResource("RectangleShape2D_ig7tw")
-debug_color = Color(0.968801, 0, 0.465518, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right_wall"]
+shape = SubResource("RectangleShape2D_1bvp3")
 
-[node name="RightWall" type="Area2D" parent="."]
-position = Vector2(1934, 537)
-scale = Vector2(1, 55)
+[node name="Opponent" type="CharacterBody2D" parent="."]
+position = Vector2(1510, 540)
+script = ExtResource("5_lquwl")
+speed = 800
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
-shape = SubResource("RectangleShape2D_ig7tw")
-debug_color = Color(2.64719e-06, 0.640364, 0.351009, 0.42)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Opponent"]
+shape = SubResource("RectangleShape2D_7mycd")
+
+[node name="Sprite2D" type="Sprite2D" parent="Opponent"]
+scale = Vector2(10, 100)
+texture = SubResource("CanvasTexture_lquwl")
