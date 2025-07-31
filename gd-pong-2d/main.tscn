@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bbpqiygpiuqpg"]
+[gd_scene load_steps=20 format=3 uid="uid://bbpqiygpiuqpg"]
 
 [ext_resource type="Script" uid="uid://76hc8cfckdwy" path="res://player.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://cvedjwqfqoq2j" path="res://game_over_control.gd" id="1_kek77"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://dsbgcw43vm88s" path="res://start_game_control.gd" id="4_272bh"]
 [ext_resource type="Script" uid="uid://i571iqgksv3r" path="res://start_button.gd" id="5_5vw27"]
 [ext_resource type="Script" uid="uid://bb02nk8xcxfde" path="res://opponent.gd" id="5_lquwl"]
+[ext_resource type="AudioStream" uid="uid://7iy2iaeecm6t" path="res://audio/doot.wav" id="9_efxa6"]
+[ext_resource type="AudioStream" uid="uid://bohc18nmcixwa" path="res://audio/athletic rrt.wav" id="10_4c57u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
 size = Vector2(20, 103)
@@ -16,6 +18,17 @@ size = Vector2(20, 103)
 [sub_resource type="CanvasTexture" id="CanvasTexture_h2yge"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ig7tw"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kek77"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+inherit_velocity_ratio = 0.05
+angular_velocity_min = -49.66
+angular_velocity_max = 152.15
+gravity = Vector3(0, 98, 0)
+scale_min = 0.1
+scale_max = 10.0
+scale_over_velocity_max = 10.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7mycd"]
 size = Vector2(20, 100)
@@ -52,6 +65,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "0"
+
+[node name="Player2Join" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "Press X for Player 2 to Join"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
@@ -124,6 +141,7 @@ text = "Exit"
 script = ExtResource("2_7mycd")
 
 [node name="StartGameControl" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -198,6 +216,20 @@ shape = SubResource("CircleShape2D_ig7tw")
 scale = Vector2(15, 15)
 texture = ExtResource("2_0xm2m")
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Ball"]
+amount = 40
+texture = ExtResource("2_0xm2m")
+lifetime = 0.75
+randomness = 1.0
+fixed_fps = 60
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_kek77")
+
+[node name="Hit" type="AudioStreamPlayer" parent="Ball"]
+stream = ExtResource("9_efxa6")
+volume_db = 2.0
+playback_type = 1
+
 [node name="Opponent" type="CharacterBody2D" parent="."]
 position = Vector2(1510, 540)
 script = ExtResource("5_lquwl")
@@ -235,6 +267,11 @@ position = Vector2(1935, 548)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="right_wall"]
 shape = SubResource("RectangleShape2D_1bvp3")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_4c57u")
+volume_db = -20.0
+autoplay = true
 
 [connection signal="pressed" from="CanvasLayer/GameOverControl/GameOverContainer/RetryButton" to="CanvasLayer/GameOverControl/GameOverContainer/RetryButton" method="_on_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameOverControl/GameOverContainer/ExitButton" to="CanvasLayer/GameOverControl/GameOverContainer/ExitButton" method="_on_pressed"]
